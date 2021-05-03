@@ -12,9 +12,9 @@ public class Main {
 		inicio(file);
 	}
 	private File inicio(File file) {
-		 Lista listaController = new Lista();
-		 GerarArquivo.gerarBackup(file, file.getName());
-         GerarArquivo.geradorDeArquivo(listaController.formatarLista(listaController.criarLista(file)), file.getName());
-         return file;
+		Lista listaController = new Lista();
+		GerarArquivo.gerarBackup(file, file.getName());
+	    GerarArquivo.geradorDeArquivo(listaController.formatarLista(listaController.criarLista(file)), file.getName());
+        return file;
 	}
 }

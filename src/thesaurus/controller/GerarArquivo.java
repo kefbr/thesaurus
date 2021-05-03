@@ -58,6 +58,26 @@ public class GerarArquivo {
 			String linha = "";
 			while (true) {
 				if (linha != null) {
+						lista.add(linha);
+				} else
+					break;
+				linha = buffRead.readLine();
+			}
+			buffRead.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return lista;
+    }
+    
+    public static List<String> importarBaseParaLista(File file){
+    	List<String> lista = new ArrayList<String>();
+		try {
+			BufferedReader buffRead = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+			String linha = "";
+			while (true) {
+				if (linha != null) {
 					if(linha.contains("SINONIMO_DE"))
 						lista.add(linha);
 				} else

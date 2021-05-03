@@ -13,6 +13,10 @@ public class Lista {
 		return GerarArquivo.importarArquivoParaLista(arq);
 	}
 	
+	public List<String> criarListaBase(File arq) {
+		return GerarArquivo.importarBaseParaLista(arq);
+	}
+	
 	public List<String> formatarLista(List<String> lista) {
 		List<String> dadosFormatados = new ArrayList<String>();
 		for (String linha : lista) {
