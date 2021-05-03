@@ -5,10 +5,16 @@
  */
 package thesaurus.controller;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.commons.io.FileUtils;
 
 /**
@@ -45,4 +51,24 @@ public class GerarArquivo {
         }
     }
     
+    public static List<String> importarArquivoParaLista(File file){
+    	List<String> lista = new ArrayList<String>();
+		try {
+			BufferedReader buffRead = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+			String linha = "";
+			while (true) {
+				if (linha != null) {
+					if(linha.contains("SINONIMO_DE"))
+						lista.add(linha);
+				} else
+					break;
+				linha = buffRead.readLine();
+			}
+			buffRead.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return lista;
+    }
 }

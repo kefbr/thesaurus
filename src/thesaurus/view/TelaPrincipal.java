@@ -5,23 +5,15 @@
  */
 package thesaurus.view;
 
-import thesaurus.controller.GerarArquivo;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javax.swing.JFileChooser;
-import jxl.Cell;
-import jxl.Sheet;
-import jxl.Workbook;
-import jxl.read.biff.BiffException;
-import thesaurus.controller.Utils;
+
+import thesaurus.controller.Main;
 
 /**
  *
@@ -78,7 +70,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         importar.setText("Importar Arquivo");
         importar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                importarActionPerformed(evt);
+                //importarActionPerformed(evt);
             }
         });
         jMenu1.add(importar);
@@ -123,43 +115,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
         int returnVal = seletor.showOpenDialog(this);
         
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File arq = seletor.getSelectedFile();
+        	Main controller = new Main(seletor.getSelectedFile());
             try {
-                FileInputStream arquivo = new FileInputStream(arq);
-                InputStreamReader input = new InputStreamReader(arquivo);
-                BufferedReader bfr = new BufferedReader(input);
-
-                String linha;
-                List<String> dadosFormatados = new ArrayList<>();
-
-                do {
-                    linha = bfr.readLine();
-                    if (linha != null) {
-                        if (Utils.isNomeClass(linha)) {
-                            dadosFormatados.add(Utils.retornaTODOThesaurus(linha)+"\n");
-                            dadosFormatados.add("@ThesaurusMapper(\"t" + Utils.retornaAnotacaoClasseThesaurus(linha) + "\")\n");
-                            dadosFormatados.add(linha+"\n");
-                        } else if(Utils.isNomeVariavel(linha)){
-                            dadosFormatados.add(Utils.calculaCaracteres(linha)+Utils.retornaTODOThesaurus(linha)+"\n");
-                            dadosFormatados.add(Utils.calculaCaracteres(linha)+"@ThesaurusMapper(\"" + Utils.retornaAnotacaoAtributoThesaurus(linha) + "\")\n");
-                            dadosFormatados.add(linha+"\n\n");
-                        }
-                        else {
-                            dadosFormatados.add(linha+"\n");
-                        }
-                    }
-                } while (linha != null);
-                finalizaSessoes(arquivo, input, bfr);
-                GerarArquivo.gerarBackup(arq, arq.getName());
-                GerarArquivo.geradorDeArquivo(dadosFormatados, arq.getName());
-                File dir = new File(System.getProperty("user.home")+"\\Documents");
-		File arqLer = new File(dir, arq.getName());
-                textArea.read( new FileReader( arqLer.getAbsolutePath() ), null );
+                textArea.read( new FileReader( controller.file.getAbsolutePath() ), null );
             } catch (IOException ex) {
                 System.out.println("Problema ao acessar o arquivo: " + ex.getMessage());
             }
         } else {
-            System.out.println("AÃ§Ã£o cancelada. ");
+            System.out.println("Ação cancelada. ");
         }
     }//GEN-LAST:event_AbrirActionPerformed
 
@@ -167,45 +130,34 @@ public class TelaPrincipal extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_SairActionPerformed
 
-    private void importarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importarActionPerformed
-        int returnVal = seletor.showOpenDialog(this);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-             File excel = seletor.getSelectedFile();
-            try {
-                Workbook workbook = Workbook.getWorkbook(excel);
-                Sheet sheet = workbook.getSheet(0);
-                int linhas = sheet.getRows();
-                
-                for(int i = 1; i < linhas; i++){
-                    Cell a1 = sheet.getCell(1, i);
-                    Cell a2 = sheet.getCell(2, i);
-                    
-                    String as1 = a1.getContents();
-                    String as2 = a2.getContents();
-                    System.out.println("Coluna 1: " + as1);
-                    System.out.println("Coluna 2: " + as2);
-                    
-                }
-                
-                workbook.close();
-                
-            } catch (IOException ex) {
-                Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (BiffException ex) {
-                Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-             
-            
-        }
-    }//GEN-LAST:event_importarActionPerformed
-    private static void finalizaSessoes(FileInputStream arquivo, InputStreamReader input, BufferedReader bfr)
-            throws IOException {
-        bfr.close();
-        input.close();
-        arquivo.close();
-    }
-
-   
+	/*
+	 * private void importarActionPerformed(java.awt.event.ActionEvent evt)
+	 * {//GEN-FIRST:event_importarActionPerformed int returnVal =
+	 * seletor.showOpenDialog(this); if (returnVal == JFileChooser.APPROVE_OPTION) {
+	 * File excel = seletor.getSelectedFile(); try { Workbook workbook =
+	 * Workbook.getWorkbook(excel); Sheet sheet = workbook.getSheet(0); int linhas =
+	 * sheet.getRows();
+	 * 
+	 * for(int i = 1; i < linhas; i++){ Cell a1 = sheet.getCell(1, i); Cell a2 =
+	 * sheet.getCell(2, i);
+	 * 
+	 * String as1 = a1.getContents(); String as2 = a2.getContents();
+	 * System.out.println("Coluna 1: " + as1); System.out.println("Coluna 2: " +
+	 * as2);
+	 * 
+	 * }
+	 * 
+	 * workbook.close();
+	 * 
+	 * } catch (IOException ex) {
+	 * Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+	 * } catch (BiffException ex) {
+	 * Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+	 * }
+	 * 
+	 * 
+	 * } }//GEN-LAST:event_importarActionPerformed
+	 */       
 
     /**
      * @param args the command line arguments
