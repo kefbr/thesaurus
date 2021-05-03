@@ -121,6 +121,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void AbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AbrirActionPerformed
         int returnVal = seletor.showOpenDialog(this);
+        
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File arq = seletor.getSelectedFile();
             try {
@@ -138,7 +139,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                             dadosFormatados.add(Utils.retornaTODOThesaurus(linha)+"\n");
                             dadosFormatados.add("@ThesaurusMapper(\"t" + Utils.retornaAnotacaoClasseThesaurus(linha) + "\")\n");
                             dadosFormatados.add(linha+"\n");
-                        } else if(Utils.isNomeVariavel(linha, Utils.tiposJava())){
+                        } else if(Utils.isNomeVariavel(linha)){
                             dadosFormatados.add(Utils.calculaCaracteres(linha)+Utils.retornaTODOThesaurus(linha)+"\n");
                             dadosFormatados.add(Utils.calculaCaracteres(linha)+"@ThesaurusMapper(\"" + Utils.retornaAnotacaoAtributoThesaurus(linha) + "\")\n");
                             dadosFormatados.add(linha+"\n\n");
@@ -149,9 +150,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
                     }
                 } while (linha != null);
                 finalizaSessoes(arquivo, input, bfr);
-                GerarArquivo.geradorDeArquivo(dadosFormatados, "bkp_"+arq.getName());
-                File dir = new File(System.getProperty("user.home")+"\\Documents\\aqui");
-		File arqLer = new File(dir, "bkp_"+arq.getName());
+                GerarArquivo.gerarBackup(arq, arq.getName());
+                GerarArquivo.geradorDeArquivo(dadosFormatados, arq.getName());
+                File dir = new File(System.getProperty("user.home")+"\\Documents");
+		File arqLer = new File(dir, arq.getName());
                 textArea.read( new FileReader( arqLer.getAbsolutePath() ), null );
             } catch (IOException ex) {
                 System.out.println("Problema ao acessar o arquivo: " + ex.getMessage());

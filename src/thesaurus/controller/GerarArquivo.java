@@ -5,9 +5,11 @@
  */
 package thesaurus.controller;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.List;
+import org.apache.commons.io.FileUtils;
 
 /**
  *
@@ -22,7 +24,7 @@ public class GerarArquivo {
      */
     public static void geradorDeArquivo(List<String> dados, String nome){
         try{
-            FileWriter arq = new FileWriter(System.getProperty("user.home")+"\\Documents\\aqui\\"+nome);
+            FileWriter arq = new FileWriter(System.getProperty("user.home")+"\\Documents\\"+nome);
             PrintWriter gravarArq = new PrintWriter(arq);
             for (String dado : dados) {
                 gravarArq.printf(dado);
@@ -32,6 +34,15 @@ public class GerarArquivo {
             System.err.println("Erro ao gerar arquivo"+e.getMessage());
         }
         
+    }
+    
+    public static void gerarBackup(File arquivoOriginal, String nome){
+        try{
+            File arquivoBackup = new File(System.getProperty("user.home")+"\\Documents\\"+"bck_"+nome);
+            FileUtils.copyFile(arquivoOriginal, arquivoBackup);
+        }catch(Exception e){
+             System.err.println("Erro ao gerar arquivo"+e.getMessage());
+        }
     }
     
 }
