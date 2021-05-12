@@ -19,18 +19,26 @@ public class Lista {
 	
 	public List<String> formatarLista(List<String> lista) {
 		List<String> dadosFormatados = new ArrayList<String>();
+		Boolean imports = true;
 		for (String linha : lista) {
 			if (Class.isNomeClass(linha)) {
                 dadosFormatados.add(Annotation.retornaTODOThesaurus(linha)+"\n");
-                dadosFormatados.add("@ThesaurusMapper(\"t" + Annotation.retornaAnotacaoClasseThesaurus(linha) + "\")\n");
+                dadosFormatados.add("@ThesaurusCollection(name=\" " + Annotation.retornaAnotacaoClasseThesaurus(linha) + "\")\n");
                 dadosFormatados.add(linha+"\n");
             } else if(Class.isNomeVariavel(linha)){
                 dadosFormatados.add(Utils.calculaCaracteres(linha)+Annotation.retornaTODOThesaurus(linha)+"\n");
-                dadosFormatados.add(Utils.calculaCaracteres(linha)+"@ThesaurusMapper(\"" + Annotation.retornaAnotacaoAtributoThesaurus(linha) + "\")\n");
+                dadosFormatados.add(Utils.calculaCaracteres(linha)+"@ThesaurusProperty(name=\" " + Annotation.retornaAnotacaoAtributoThesaurus(linha) + "\")\n");
                 dadosFormatados.add(linha+"\n\n");
-            }
-            else {
+            } else if (linha.contains("import")) {
                 dadosFormatados.add(linha+"\n");
+                if(imports) {
+                	dadosFormatados.add("import br.com.bradesco.lib.persistmongo.annotation.ThesaurusCollection;");
+                    dadosFormatados.add("import br.com.bradesco.lib.persistmongo.annotation.ThesaurusProperty;");
+                    dadosFormatados.add("import br.com.bradesco.lib.persistmongo.dao.PersistMongoEntidade;");
+                    imports = false;
+                }
+            } else {
+            	dadosFormatados.add(linha+"\n");
             }
 		}
 		return dadosFormatados;

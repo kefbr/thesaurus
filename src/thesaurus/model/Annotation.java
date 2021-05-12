@@ -56,7 +56,7 @@ public class Annotation {
         if (ajuste) {
             
             ajustado = "//TODO ajustar ";
-            ajustado += nomeFormatado + " NÃ£o encontrado no thesaurus";
+            ajustado += nomeFormatado + " Não encontrado no thesaurus";
         }
         return ajustado;
     }
