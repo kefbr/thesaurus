@@ -8,9 +8,11 @@ package thesaurus.controller;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,23 +30,23 @@ public class GerarArquivo {
      * @param dados
      * @param nome 
      */
-    public static void geradorDeArquivo(List<String> dados, String nome){
+    public static void geradorDeArquivo(List<String> dados, String path){
         try{
-            FileWriter arq = new FileWriter(System.getProperty("user.home")+"\\Documents\\"+nome);
-            PrintWriter gravarArq = new PrintWriter(arq);
+            OutputStream os = new FileOutputStream(path);
+            PrintWriter gravarArq = new PrintWriter(new OutputStreamWriter(os, "Cp1252"));
             for (String dado : dados) {
                 gravarArq.printf(dado);
             }
-            arq.close();
+            gravarArq.close();
         }catch(Exception e){
             System.err.println("Erro ao gerar arquivo"+e.getMessage());
         }
         
     }
     
-    public static void gerarBackup(File arquivoOriginal, String nome){
+    public static void gerarBackup(File arquivoOriginal){
         try{
-            File arquivoBackup = new File(System.getProperty("user.home")+"\\Documents\\"+"bck_"+nome);
+            File arquivoBackup = new File(arquivoOriginal.getParent()+"\\bkp_"+ arquivoOriginal.getName());
             FileUtils.copyFile(arquivoOriginal, arquivoBackup);
         }catch(Exception e){
              System.err.println("Erro ao gerar arquivo"+e.getMessage());

@@ -131,7 +131,8 @@ public class Dicionario {
         return dicionario;
     }
     
-    private static String buscaPalavraSinonimo(List<String> sinonimos, List<String> dicionario) {
+    @SuppressWarnings("unused")
+	private static String buscaPalavraSinonimo(List<String> sinonimos, List<String> dicionario) {
         String palavraEncontrada = "";
         for (String palavra : dicionario) {
             for (String sinonimo : sinonimos) {
