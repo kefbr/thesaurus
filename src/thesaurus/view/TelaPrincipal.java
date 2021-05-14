@@ -156,6 +156,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void edicaoSalvarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_edicaoSalvarMouseClicked
     	try {
             textArea.read( new BufferedReader(new InputStreamReader(new FileInputStream(new Main(seletor.getSelectedFile()).inicio()), "Cp1252")), null );
+            console.setText("Arquivo salvo com sucesso!");
 		} catch (Exception e) {
 			console.setText(e.getMessage());
 		}
