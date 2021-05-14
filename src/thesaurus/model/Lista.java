@@ -30,7 +30,7 @@ public class Lista {
                 dadosFormatados.add(linha+"\n");
             } else if(Class.isNomeVariavel(linha)){
                 dadosFormatados.add(Utils.calculaCaracteres(linha)+Annotation.retornaTODOThesaurus(linha)+"\n");
-                dadosFormatados.add(Utils.calculaCaracteres(linha)+"@ThesaurusProperty(name=\"" + Annotation.retornaAnotacaoAtributoThesaurus(linha) + "\")\n");
+                dadosFormatados.add(Utils.calculaCaracteres(linha)+"@SerializedName(name=\"" + Annotation.retornaAnotacaoAtributoThesaurus(linha) + "\")\n");
                 dadosFormatados.add(linha+"\n\n");
             } else if (linha.contains("import")) {
                 dadosFormatados.add(linha+"\n");
