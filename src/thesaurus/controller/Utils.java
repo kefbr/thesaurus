@@ -5,7 +5,6 @@
  */
 package thesaurus.controller;
 
-import thesaurus.model.Dicionario;
 
 /**
  *
@@ -14,17 +13,6 @@ import thesaurus.model.Dicionario;
 public class Utils {
     public static String normalizeFiles(String file) {
         return file.trim().replaceAll("\\s{2,}", " ");
-    }
-
-    public static String teste(String palavra){
-        String val="";
-        if(!Dicionario.palavraMnemonica(palavra).equals("")){
-            val = Dicionario.palavraMnemonica(palavra);
-        }else{
-            val = Dicionario.verificaBaseTEP(palavra);
-        }
-        
-        return val;
     }
     
     public static String calculaCaracteres(String var) {

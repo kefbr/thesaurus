@@ -19,7 +19,12 @@ import static thesaurus.model.Dicionario.dicionarioMnemomico;
 public class Annotation {
     public static List<String> retornaPalavrasFormatadas(String nomeFormatar) {
         String[] letras = nomeFormatar.split("");
+        String atributoFormatado = "";
         String palavraFormatada = "";
+        if(nomeFormatar.contains("private")) {
+        	atributoFormatado = nomeFormatar.substring(nomeFormatar.lastIndexOf(" "));
+        	letras = atributoFormatado.substring(1).split("");
+        }
 
         for (int cont = 0; cont < letras.length; cont++) {
             if (Character.isUpperCase(letras[cont].charAt(0)) && cont > 0) {
@@ -31,11 +36,11 @@ public class Annotation {
         return Arrays.asList(palavraFormatada.split(";"));
     }
 
-    public static String retornaAnotacaoClasseThesaurus(String nomeClasse) {
+    public static String retornaAnotacaoClasseThesaurus(String nomeClasse) throws Exception {
         return dicionarioMnemomico(retornaPalavrasFormatadas(Class.retornaNomeClasse(normalizeFiles(nomeClasse))), Dicionario.retornarDicionario());
     }
 
-    public static String retornaAnotacaoAtributoThesaurus(String nomeAtributo) {
+    public static String retornaAnotacaoAtributoThesaurus(String nomeAtributo) throws Exception {
         return dicionarioMnemomico(retornaAtributoFormatado(nomeAtributo), Dicionario.retornarDicionario());
     }
 

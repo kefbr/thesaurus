@@ -24,13 +24,19 @@ public class Lista {
 		Boolean imports = true;
 		for (String linha : lista) {
 			if (Class.isNomeClass(linha)) {
-				dadosFormatados.add("//TODO Thesaurus Gerador Automatico");
-                dadosFormatados.add(Annotation.retornaTODOThesaurus(linha)+"\n");
-                dadosFormatados.add("@ThesaurusCollection(name=\"" + Annotation.retornaAnotacaoClasseThesaurus(linha) + "\")\n");
+				dadosFormatados.add("//TODO Thesaurus Gerador Automatico \n");
+				try {
+					dadosFormatados.add("@ThesaurusCollection(name=\"" + Annotation.retornaAnotacaoClasseThesaurus(linha) + "\")\n");
+				} catch (Exception e) {
+					 dadosFormatados.add(Annotation.retornaTODOThesaurus(linha)+"\n");
+				}
                 dadosFormatados.add(linha+"\n");
-            } else if(Class.isNomeVariavel(linha)){
-                dadosFormatados.add(Utils.calculaCaracteres(linha)+Annotation.retornaTODOThesaurus(linha)+"\n");
-                dadosFormatados.add(Utils.calculaCaracteres(linha)+"@SerializedName(name=\"" + Annotation.retornaAnotacaoAtributoThesaurus(linha) + "\")\n");
+            } else if(Class.isNomeVariavel(linha)){  
+                try {
+                	dadosFormatados.add(Utils.calculaCaracteres(linha)+"@SerializedName(name=\"" + Annotation.retornaAnotacaoAtributoThesaurus(linha) + "\")\n");
+				} catch (Exception e) {
+					dadosFormatados.add(Utils.calculaCaracteres(linha)+Annotation.retornaTODOThesaurus(linha)+"\n");
+				}
                 dadosFormatados.add(linha+"\n\n");
             } else if (linha.contains("import")) {
                 dadosFormatados.add(linha+"\n");

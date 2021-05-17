@@ -5,8 +5,6 @@
  */
 package thesaurus.model;
 
-import static thesaurus.controller.Utils.teste;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,13 +27,27 @@ import thesaurus.controller.Utils;
  * @author vinicosta
  */
 public class Dicionario {
-    public static String dicionarioMnemomico(List<String> palavras, Map<String, String> dicionario) {
+	
+	private static String verificaPalavraMnemonicaOuBaseTep(String palavra){
+        String val="";
+        if(!Dicionario.palavraMnemonica(palavra).equals("")){
+            val = Dicionario.palavraMnemonica(palavra);
+        }else{
+            val = Dicionario.verificaBaseTEP(palavra);
+        }
+        
+        return val;
+    }
+	
+    public static String dicionarioMnemomico(List<String> palavras, Map<String, String> dicionario) throws Exception {
         String nomeFormatado = "";
         for (String palavra : palavras) {
             if (dicionario.keySet().contains(palavra)) {
                 nomeFormatado += dicionario.get(palavra);
-            } else {
-                teste(palavra);
+            } else if (verificaPalavraMnemonicaOuBaseTep(palavra).equals("")) {
+            	throw new Exception("Palavra nao encontrada.");
+            }else {
+            	verificaPalavraMnemonicaOuBaseTep(palavra);
                 nomeFormatado += palavra;
             }
         }
@@ -125,7 +137,7 @@ public class Dicionario {
             workbook.close();
 
         } catch (Exception e) {
-            System.out.println("Erro na execução do parse " + e.getMessage());
+            System.out.println("Erro na execucao do parse " + e.getMessage());
         }
 
         return dicionario;

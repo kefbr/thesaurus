@@ -7,7 +7,7 @@ import thesaurus.model.Lista;
 
 public class Main {
 
-	public File file;
+	private File file;
 	private Lista listaController = new Lista();
 	public Main(File selectedFile) {
 		this.file = selectedFile;
