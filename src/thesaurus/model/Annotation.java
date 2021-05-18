@@ -9,6 +9,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import thesaurus.arquivos.Arquivos;
+
 import static thesaurus.controller.Utils.normalizeFiles;
 import static thesaurus.model.Dicionario.dicionarioMnemomico;
 
@@ -17,7 +19,8 @@ import static thesaurus.model.Dicionario.dicionarioMnemomico;
  * @author silvfilh
  */
 public class Annotation {
-    public static List<String> retornaPalavrasFormatadas(String nomeFormatar) {
+	
+	public List<String> retornaPalavrasFormatadas(String nomeFormatar) {
         String[] letras = nomeFormatar.split("");
         String atributoFormatado = "";
         String palavraFormatada = "";
@@ -36,19 +39,19 @@ public class Annotation {
         return Arrays.asList(palavraFormatada.split(";"));
     }
 
-    public static String retornaAnotacaoClasseThesaurus(String nomeClasse) throws Exception {
-        return dicionarioMnemomico(retornaPalavrasFormatadas(Class.retornaNomeClasse(normalizeFiles(nomeClasse))), Dicionario.retornarDicionario());
+    public String retornaAnotacaoClasseThesaurus(String nomeClasse) {
+        return dicionarioMnemomico(retornaPalavrasFormatadas(Class.retornaNomeClasse(normalizeFiles(nomeClasse))),  Arquivos.dicionarioXls);
     }
 
-    public static String retornaAnotacaoAtributoThesaurus(String nomeAtributo) throws Exception {
-        return dicionarioMnemomico(retornaAtributoFormatado(nomeAtributo), Dicionario.retornarDicionario());
+    public String retornaAnotacaoAtributoThesaurus(String nomeAtributo) {
+        return dicionarioMnemomico(retornaAtributoFormatado(nomeAtributo), Arquivos.dicionarioXls);
     }
 
-    public static String retornaTODOThesaurus(String nomeClasse) {
-        return retornaPalavrasNaoEncontradas(retornaPalavrasFormatadas(Class.retornaNomeClasse(normalizeFiles(nomeClasse))), Dicionario.retornarDicionario());
+    public String retornaTODOThesaurus(String nomeClasse) {
+        return retornaPalavrasNaoEncontradas(retornaPalavrasFormatadas(Class.retornaNomeClasse(normalizeFiles(nomeClasse))), Arquivos.dicionarioXls);
     }
 
-    public static String retornaPalavrasNaoEncontradas(List<String> palavras, Map<String, String> dicionario) {
+    public String retornaPalavrasNaoEncontradas(List<String> palavras, Map<String, String> dicionario) {
         String nomeFormatado = "";
         String ajustado = "";
         Boolean ajuste = false;
@@ -61,25 +64,15 @@ public class Annotation {
         if (ajuste) {
             
             ajustado = "//TODO ajustar ";
-            ajustado += nomeFormatado + " Não encontrado no thesaurus";
+            ajustado += nomeFormatado +"," + " Não encontrado no thesaurus";
         }
         return ajustado;
     }
 
-    public static List<String> retornaAtributoFormatado(String nomeFormatar) {
-        nomeFormatar = normalizeFiles(nomeFormatar);
-        String[] letras = nomeFormatar.split("");
-        String palavraFormatada = "";
-        int conta = 0;
-        for (int cont = 0; cont < letras.length; cont++) {
-            if (letras[cont].equals(" ")) {
-                conta++;
-            }
-            if (!letras[cont].equals(" ") && conta > 1) {
-                palavraFormatada = palavraFormatada + letras[cont];
-            }
-
-        }
+    public List<String> retornaAtributoFormatado(String nomeFormatar) {
+        //nomeFormatar = normalizeFiles(nomeFormatar);
+        nomeFormatar = Class.retornaNomeClasse(nomeFormatar);
+        String palavraFormatada = nomeFormatar;
         palavraFormatada = palavraFormatada.substring(0, 1).toUpperCase().concat(palavraFormatada.substring(1));
         String[] letrasFormatadas = palavraFormatada.split("");
         String atributoFormatado = "";

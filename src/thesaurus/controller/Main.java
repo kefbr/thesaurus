@@ -3,6 +3,8 @@ package thesaurus.controller;
 import java.io.File;
 import java.io.PrintWriter;
 
+import thesaurus.arquivos.Arquivos;
+import thesaurus.model.Dicionario;
 import thesaurus.model.Lista;
 
 public class Main {
@@ -24,7 +26,7 @@ public class Main {
 			System.err.println("Erro ao gerar arquivo. Tracer: "+e.getMessage());
 			throw new Exception(e);
 		}
-	    
+		
         return file;
 	}
 	public File gerarListaParaVisualizacao() {
@@ -41,4 +43,9 @@ public class Main {
 		}
 		return arq;
 	}
+	public static void carregarBases() {
+		Arquivos.dicionarioXls = Dicionario.retornarDicionario();
+		Arquivos.dicionarioTep = Dicionario.retornaSinonimosTEP();
+	}
+	
 }

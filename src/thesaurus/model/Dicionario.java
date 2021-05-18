@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 
 import jxl.Sheet;
 import jxl.Workbook;
+import thesaurus.arquivos.Arquivos;
 import thesaurus.controller.Utils;
 
 /**
@@ -28,26 +29,22 @@ import thesaurus.controller.Utils;
  */
 public class Dicionario {
 	
-	private static String verificaPalavraMnemonicaOuBaseTep(String palavra){
+	static String verificaPalavraMnemonicaOuBaseTep(String palavra){
         String val="";
         if(!Dicionario.palavraMnemonica(palavra).equals("")){
             val = Dicionario.palavraMnemonica(palavra);
-        }else{
-            val = Dicionario.verificaBaseTEP(palavra);
+        }else if(!Dicionario.verificaBaseXls(palavra).equals("")){
+            val = Dicionario.verificaBaseXls(palavra);
         }
-        
         return val;
     }
 	
-    public static String dicionarioMnemomico(List<String> palavras, Map<String, String> dicionario) throws Exception {
+    public static String dicionarioMnemomico(List<String> palavras, Map<String, String> dicionario){
         String nomeFormatado = "";
         for (String palavra : palavras) {
             if (dicionario.keySet().contains(palavra)) {
                 nomeFormatado += dicionario.get(palavra);
-            } else if (verificaPalavraMnemonicaOuBaseTep(palavra).equals("")) {
-            	throw new Exception("Palavra nao encontrada.");
             }else {
-            	verificaPalavraMnemonicaOuBaseTep(palavra);
                 nomeFormatado += palavra;
             }
         }
@@ -56,7 +53,7 @@ public class Dicionario {
     
     public static String palavraMnemonica(String palavra){
         String palavraAlterada = "";
-        Map<String, String> sinomimos = retornaSinonimosTEP();
+        Map<String, String> sinomimos = Arquivos.dicionarioTep;
         for (Map.Entry<String, String> entrada : sinomimos.entrySet()) {
            if(palavra.equals(entrada.getKey())){
                palavraAlterada = entrada.getValue();
@@ -66,10 +63,10 @@ public class Dicionario {
        return palavraAlterada; 
     }
     
-    public static String verificaBaseTEP(String palavra){
+    public static String verificaBaseXls(String palavra){
         String palavraAlterada = "";
-        Map<String, String> tep = retornarDicionario();
-        for (Map.Entry<String, String> entrada : tep.entrySet()) {
+        Map<String, String> xls = Arquivos.dicionarioXls;
+        for (Map.Entry<String, String> entrada : xls.entrySet()) {
            if(entrada.getKey().equals(palavra)){
                if(!palavraMnemonica(entrada.getValue()).equals("") ){
                     palavraAlterada = entrada.getValue();
@@ -103,6 +100,7 @@ public class Dicionario {
             bfr.close();
             input.close();
             arquivo.close();
+            return sinomimos;
         } catch (URISyntaxException | IOException ex) {
             Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
         }

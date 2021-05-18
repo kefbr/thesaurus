@@ -33,6 +33,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
      * Creates new form TelaPrincipal
      */
     public TelaPrincipal() {
+    	Main.carregarBases();
         initComponents();
     }
 

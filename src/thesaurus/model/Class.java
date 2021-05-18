@@ -11,7 +11,7 @@ package thesaurus.model;
  */
 public class Class {
     public static Boolean isNomeClass(String linha) {
-        if (linha.contains("public class ")) {
+        if (linha.contains("@Entity")) {
             return true;
         } else {
             return false;
@@ -20,20 +20,17 @@ public class Class {
     }
 
     public static Boolean isNomeVariavel(String linha) {
-        if (linha.contains("private") && linha.contains(";")) {
+        if (linha.contains("@Property")||linha.contains("@Embedded")) {
             return true;
         } else {
             return false;
         }
     }
-
+    
     public static String retornaNomeClasse(String linha) {
-        if (linha.contains("class ")) {
-            int fim = linha.lastIndexOf(" ");
-            return linha.substring(13, fim);
-        } else {
-            return linha;
-        }
+        int inicio = linha.indexOf("\"");
+        int fim = linha.lastIndexOf("\"");
+        return linha.substring(inicio, fim).replace("\"", "");
     }
     
 }
