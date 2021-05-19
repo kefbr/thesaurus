@@ -40,11 +40,29 @@ public class Annotation {
     }
 
     public String retornaAnotacaoClasseThesaurus(String nomeClasse) {
-        return dicionarioMnemomico(retornaPalavrasFormatadas(Class.retornaNomeClasse(normalizeFiles(nomeClasse))),  Arquivos.dicionarioXls);
+    	String palavraFormatada = "";
+    	for (String palavra : retornaPalavrasFormatadas(Class.retornaNomeClasse(normalizeFiles(nomeClasse)))) {
+    		String palavraMnemonico = dicionarioMnemomico(palavra);
+    		if(!palavraMnemonico.equals("")) {
+    			 palavraFormatada += palavraMnemonico;
+    		}else {
+    			 palavraFormatada += palavra;
+    		}
+		}
+    	return palavraFormatada;
     }
 
     public String retornaAnotacaoAtributoThesaurus(String nomeAtributo) {
-        return dicionarioMnemomico(retornaAtributoFormatado(nomeAtributo), Arquivos.dicionarioXls);
+    	String palavraFormatada = "";
+    	for (String palavra : retornaAtributoFormatado(nomeAtributo)) {
+    		String palavraMnemonico = dicionarioMnemomico(palavra);
+    		if(!palavraMnemonico.equals("")) {
+    			palavraFormatada += palavraMnemonico;
+    		}else {
+    			palavraFormatada += palavra;
+    		}
+		}
+    	return palavraFormatada;
     }
 
     public String retornaTODOThesaurus(String nomeClasse) {
@@ -70,7 +88,6 @@ public class Annotation {
     }
 
     public List<String> retornaAtributoFormatado(String nomeFormatar) {
-        //nomeFormatar = normalizeFiles(nomeFormatar);
         nomeFormatar = Class.retornaNomeClasse(nomeFormatar);
         String palavraFormatada = nomeFormatar;
         palavraFormatada = palavraFormatada.substring(0, 1).toUpperCase().concat(palavraFormatada.substring(1));
@@ -82,9 +99,7 @@ public class Annotation {
             } else {
                 atributoFormatado = atributoFormatado + String.valueOf(letrasFormatadas[cont].charAt(0));
             }
-
         }
-
         return Arrays.asList(atributoFormatado.split(";"));
     }
 

@@ -20,7 +20,6 @@ public class Lista {
    		List<String> dadosFormatados = new ArrayList<String>();
 		if(lista.contains("//TODO Thesaurus Gerador Automatico"))
 			throw new Exception("Já existe anotaçoes de Thesaurus neste arquivo.");
-//		Boolean imports = true;
 		for (String linha : lista) {
 			if (Class.isNomeClass(linha)) {
 				dadosFormatados.add("//TODO Thesaurus Gerador Automatico \n");
@@ -37,11 +36,11 @@ public class Lista {
 	private void adicionaLinhaVariavel(String linha, List<String> dadosFormatados) {
 		Annotation annotation = new Annotation();
 		for (String palavra : annotation.retornaAtributoFormatado(linha)) {
-			if(Dicionario.verificaPalavraMnemonicaOuBaseTep(palavra).equals("")) {
+			String palavraVerificada = Dicionario.verificaPalavraMnemonicaOuBaseTep(palavra);
+			if(palavraVerificada.equals("") || Dicionario.dicionarioMnemomico(palavraVerificada).equals("")) {
 				dadosFormatados.add(annotation.retornaTODOThesaurus(linha)+ "\n");
 				break;
 			}
-					
 		}
 		int inicio = linha.indexOf("\"");
     	dadosFormatados.add(linha.substring(0, inicio) +"\""+ annotation.retornaAnotacaoAtributoThesaurus(linha) + "\")\n");
@@ -49,9 +48,13 @@ public class Lista {
 	
 	private void adicionaLinhaClasse(String linha, List<String> dadosFormatados) {
 		Annotation annotation = new Annotation();
-		for (String palavra : annotation.retornaPalavrasFormatadas(linha)) {
-			if(Dicionario.verificaPalavraMnemonicaOuBaseTep(palavra).equals("")) {
+		for (String palavra : annotation.retornaAtributoFormatado(linha)) {
+			String palavraVerificada = Dicionario.verificaPalavraMnemonicaOuBaseTep(palavra);
+			if(palavraVerificada.equals("")) {
 				dadosFormatados.add(annotation.retornaTODOThesaurus(linha)+ "\n");
+				break;
+			}else {
+				palavra = palavraVerificada;
 				break;
 			}
 					

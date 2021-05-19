@@ -1,0 +1,101 @@
+
+package br.com.bradesco.emprestimo.gestao.documento.model.collections.documento;
+
+import java.util.List;
+
+import br.com.bradesco.emprestimo.gestao.documento.model.ParametroElemento;
+import br.com.bradesco.emprestimo.gestao.documento.model.collections.PersistMongoEntidadeCustom;
+import br.com.bradesco.emprestimo.gestao.documento.model.documento.Documento;
+import dev.morphia.annotations.Embedded;
+import dev.morphia.annotations.Entity;
+import dev.morphia.annotations.Property;
+
+//TODO Thesaurus Gerador Automatico 
+@Entity("GstaoDocto")
+public class GestaoDocumento extends PersistMongoEntidadeCustom  {
+
+	private String idHex;
+
+//TODO ajustar id Instacia , Não encontrado no thesaurus
+	@Property("IdInstacia")
+	private String idInstacia;
+
+//TODO ajustar id , Não encontrado no thesaurus
+	@Property("IdProdt")
+	private Long idProduto;
+
+//TODO ajustar id , Não encontrado no thesaurus
+	@Property("IdPpsta")
+	private Long idProposta;
+
+	@Embedded("Acord")
+	private List<Documento> documentos;
+
+	private boolean status;
+
+	public GestaoDocumento() {
+		super();
+	}
+
+	public GestaoDocumento(ParametroElemento parametroElemento) {
+		super();
+		this.idInstacia = parametroElemento.getIdInstacia();
+		this.idProduto = parametroElemento.getIdProduto();
+		this.idProposta = parametroElemento.getIdProposta();
+	}
+
+	public String getIdHex() {
+		return idHex;
+	}
+
+	public void setIdHex(String idHex) {
+		this.idHex = idHex;
+	}
+
+	public String getIdInstacia() {
+		return idInstacia;
+	}
+
+	public void setIdInstacia(String idInstacia) {
+		this.idInstacia = idInstacia;
+	}
+
+	public Long getIdProduto() {
+		return idProduto;
+	}
+
+	public void setIdProduto(Long idProduto) {
+		this.idProduto = idProduto;
+	}
+
+	public Long getIdProposta() {
+		return idProposta;
+	}
+
+	public void setIdProposta(Long idProposta) {
+		this.idProposta = idProposta;
+	}
+
+	public List<Documento> getDocumentos() {
+		return documentos;
+	}
+
+	public void setDocumentos(List<Documento> documentos) {
+		this.documentos = documentos;
+	}
+
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+
+	@Override
+	public String toString() {
+		return "GestaoDocumento [idHex=" + idHex + ", idInstacia=" + idInstacia + ", idProduto=" + idProduto
+				+ ", idProposta=" + idProposta + ", documentos=" + documentos + ", status=" + status + "]";
+	}
+
+}
