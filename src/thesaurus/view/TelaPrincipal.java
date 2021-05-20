@@ -5,6 +5,8 @@
  */
 package thesaurus.view;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -15,9 +17,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import thesaurus.controller.Main;
+import thesaurus.model.Annotation;
 
 /**
  *
@@ -33,8 +37,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
      * Creates new form TelaPrincipal
      */
     public TelaPrincipal() {
-    	Main.carregarBases();
-        initComponents();
+    	initComponents();
     }
 
     /**
@@ -46,27 +49,82 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         seletor = new javax.swing.JFileChooser();
+        telaCarregamento = new javax.swing.JFrame();
+        labelCarregando = new javax.swing.JLabel();
+        progressBar = new javax.swing.JProgressBar();
         jScrollPane1 = new javax.swing.JScrollPane();
         textArea = new javax.swing.JTextArea();
         edicaoSalvar = new javax.swing.JButton();
         Scan = new javax.swing.JButton();
         console = new javax.swing.JLabel();
+        fieldPalavra = new javax.swing.JTextField();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        consolePalavra = new javax.swing.JTextPane();
+        dicionarioThesaurus = new javax.swing.JLabel();
+        resultado = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         Abrir = new javax.swing.JMenuItem();
         Sair = new javax.swing.JMenuItem();
 
         seletor.setDialogTitle("Dialogo aberto");
-        seletor.setFileFilter(new FileNameExtensionFilter(
-        	     "Arquivo Java (*.java)", "java"));
+        FileFilter filter = new FileNameExtensionFilter(".java", "java");
+        seletor.setFileFilter(filter);
+
+        telaCarregamento.setAlwaysOnTop(true);
+        telaCarregamento.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/thesaurus/arquivos/ico.png")));
+        telaCarregamento.setSize(new java.awt.Dimension(280, 100));
+        telaCarregamento.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                telaCarregamentoWindowClosed(evt);
+            }
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                telaCarregamentoWindowOpened(evt);
+            }
+        });
+
+        labelCarregando.setText("Carregando Base de Dados...");
+
+        javax.swing.GroupLayout telaCarregamentoLayout = new javax.swing.GroupLayout(telaCarregamento.getContentPane());
+        telaCarregamento.getContentPane().setLayout(telaCarregamentoLayout);
+        telaCarregamentoLayout.setHorizontalGroup(
+            telaCarregamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(telaCarregamentoLayout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addGroup(telaCarregamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelCarregando))
+                .addContainerGap(107, Short.MAX_VALUE))
+        );
+        telaCarregamentoLayout.setVerticalGroup(
+            telaCarregamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(telaCarregamentoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(labelCarregando)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(53, Short.MAX_VALUE))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Dicionário Thesaurus");
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/thesaurus/arquivos/ico.png")));
+        setMaximumSize(new java.awt.Dimension(734, 483));
+        setName("Dicinário Thesaurus"); // NOI18N
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
+        textArea.setEditable(false);
         textArea.setColumns(20);
         textArea.setRows(5);
+        textArea.setToolTipText("Visualizador de arquivo");
         jScrollPane1.setViewportView(textArea);
 
         edicaoSalvar.setText("Salvar");
+        edicaoSalvar.setToolTipText("Salva uma cópia do arquivo e cria outro arquivo com as modificações do thesaurus.");
         edicaoSalvar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 edicaoSalvarMouseClicked(evt);
@@ -74,6 +132,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
 
         Scan.setText("Scan");
+        Scan.setToolTipText("Realiza a consulta sem salvar o arquivo.");
         Scan.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 ScanMouseClicked(evt);
@@ -81,6 +140,26 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
 
         console.setForeground(new java.awt.Color(255, 0, 0));
+
+        fieldPalavra.setColumns(1);
+        fieldPalavra.setText("Palavra");
+        fieldPalavra.setToolTipText("Com esse campo voce pode encontrar no dicionário thesaurus a palavra que precisa.");
+        fieldPalavra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fieldPalavraActionPerformed(evt);
+            }
+        });
+
+        consolePalavra.setEditable(false);
+        consolePalavra.setContentType("text/html"); // NOI18N
+        consolePalavra.setToolTipText("Resultado da palavra encontrada no dicionário thesaurus.");
+        jScrollPane3.setViewportView(consolePalavra);
+
+        dicionarioThesaurus.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        dicionarioThesaurus.setText("DIcionário Thesaurus");
+
+        resultado.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        resultado.setText("Resultado:");
 
         jMenu1.setText("Menu");
 
@@ -113,22 +192,39 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(console, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 583, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(edicaoSalvar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(Scan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(edicaoSalvar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Scan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(fieldPalavra)
+                            .addComponent(dicionarioThesaurus, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane3))
+                        .addGap(25, 25, 25))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(34, 34, 34)
+                        .addComponent(resultado)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(Scan)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(edicaoSalvar))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(edicaoSalvar)
+                        .addGap(84, 84, 84)
+                        .addComponent(dicionarioThesaurus)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(fieldPalavra, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(resultado)
+                        .addGap(4, 4, 4)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(console)
                 .addContainerGap(39, Short.MAX_VALUE))
@@ -156,7 +252,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void edicaoSalvarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_edicaoSalvarMouseClicked
     	try {
-            textArea.read( new BufferedReader(new InputStreamReader(new FileInputStream(new Main(seletor.getSelectedFile()).inicio()), "Cp1252")), null );
+            textArea.read( new BufferedReader(new InputStreamReader(new FileInputStream(new Main(seletor.getSelectedFile()).inicio()), "UTF-8")), null );
             console.setText("Arquivo salvo com sucesso!");
 		} catch (Exception e) {
 			console.setText(e.getMessage());
@@ -166,7 +262,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void ScanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ScanMouseClicked
         try {
-            textArea.read( new BufferedReader(new InputStreamReader(new FileInputStream(new Main(seletor.getSelectedFile()).gerarListaParaVisualizacao()), "Cp1252")), null );
+            textArea.read( new BufferedReader(new InputStreamReader(new FileInputStream(new Main(seletor.getSelectedFile()).gerarListaParaVisualizacao()), "UTF-8")), null );
         } catch (FileNotFoundException ex) {
             Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UnsupportedEncodingException ex) {
@@ -175,39 +271,31 @@ public class TelaPrincipal extends javax.swing.JFrame {
             Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_ScanMouseClicked
-                                                
-	/*
-	 * private void importarActionPerformed(java.awt.event.ActionEvent evt)
-	 * {                                                         
-	 * seletor.showOpenDialog(this); if (returnVal == JFileChooser.APPROVE_OPTION) {
-	 * File excel = seletor.getSelectedFile(); try { Workbook workbook =
-	 * Workbook.getWorkbook(excel); Sheet sheet = workbook.getSheet(0); int linhas =
-	 * sheet.getRows();
-	 * 
-	 * for(int i = 1; i < linhas; i++){ Cell a1 = sheet.getCell(1, i); Cell a2 =
-	 * sheet.getCell(2, i);
-	 * 
-	 * String as1 = a1.getContents(); String as2 = a2.getContents();
-	 * System.out.println("Coluna 1: " + as1); System.out.println("Coluna 2: " +
-	 * as2);
-	 * 
-	 * }
-	 * 
-	 * workbook.close();
-	 * 
-	 * } catch (IOException ex) {
-	 * Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-	 * } catch (BiffException ex) {
-	 * Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-	 * }
-	 * 
-	 * 
-	 * } }                                        
-	 */       
 
-    /**
-     * @param args the command line arguments
-     */
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+    	telaCarregamento.setVisible(true); 
+    }//GEN-LAST:event_formWindowOpened
+
+    private void fieldPalavraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldPalavraActionPerformed
+        Annotation annotation = new Annotation();
+        consolePalavra.setText(annotation.retornaAnotacaoAtributoThesaurus("\"" +fieldPalavra.getText()+"\""));
+        console.setText(annotation.retornaTODOThesaurus("\"" +fieldPalavra.getText()+"\""));
+    }//GEN-LAST:event_fieldPalavraActionPerformed
+
+    private void telaCarregamentoWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_telaCarregamentoWindowOpened
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+    	telaCarregamento.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+    	this.setEnabled(false);
+    	Carregamento carregamento = new Carregamento();
+    	carregamento.start();
+    }//GEN-LAST:event_telaCarregamentoWindowOpened
+
+    private void telaCarregamentoWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_telaCarregamentoWindowClosed
+        this.setEnabled(true);
+        this.toFront();
+    }//GEN-LAST:event_telaCarregamentoWindowClosed
+    
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -241,15 +329,23 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem Abrir;
-    private javax.swing.JMenuItem Sair;
-    private javax.swing.JButton Scan;
-    private javax.swing.JLabel console;
-    private javax.swing.JButton edicaoSalvar;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JFileChooser seletor;
-    private javax.swing.JTextArea textArea;
+    public static javax.swing.JMenuItem Abrir;
+    public static javax.swing.JMenuItem Sair;
+    public static javax.swing.JButton Scan;
+    public static javax.swing.JLabel console;
+    public static javax.swing.JTextPane consolePalavra;
+    public static javax.swing.JLabel dicionarioThesaurus;
+    public static javax.swing.JButton edicaoSalvar;
+    public static javax.swing.JTextField fieldPalavra;
+    public static javax.swing.JMenu jMenu1;
+    public static javax.swing.JMenuBar jMenuBar1;
+    public static javax.swing.JScrollPane jScrollPane1;
+    public static javax.swing.JScrollPane jScrollPane3;
+    public static javax.swing.JLabel labelCarregando;
+    public static javax.swing.JProgressBar progressBar;
+    public static javax.swing.JLabel resultado;
+    public static javax.swing.JFileChooser seletor;
+    public static javax.swing.JFrame telaCarregamento;
+    public static javax.swing.JTextArea textArea;
     // End of variables declaration//GEN-END:variables
 }

@@ -28,6 +28,9 @@ public class Class {
     }
     
     public static String retornaNomeClasse(String linha) {
+    	if(linha.indexOf("\"") == -1) {
+    		return linha;
+    	}
         int inicio = linha.indexOf("\"");
         int fim = linha.lastIndexOf("\"");
         return linha.substring(inicio, fim).replace("\"", "");

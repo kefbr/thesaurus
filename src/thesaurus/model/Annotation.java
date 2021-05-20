@@ -66,15 +66,15 @@ public class Annotation {
     }
 
     public String retornaTODOThesaurus(String nomeClasse) {
-        return retornaPalavrasNaoEncontradas(retornaPalavrasFormatadas(Class.retornaNomeClasse(normalizeFiles(nomeClasse))), Arquivos.dicionarioXls);
+        return retornaPalavrasNaoEncontradas(retornaPalavrasFormatadas(Class.retornaNomeClasse(normalizeFiles(nomeClasse))));
     }
 
-    public String retornaPalavrasNaoEncontradas(List<String> palavras, Map<String, String> dicionario) {
+    public String retornaPalavrasNaoEncontradas(List<String> palavras) {
         String nomeFormatado = "";
         String ajustado = "";
         Boolean ajuste = false;
         for (String palavra : palavras) {
-            if (!dicionario.keySet().contains(palavra)) {
+            if (Dicionario.dicionarioMnemomico(palavra).equals(palavra)) {
                 nomeFormatado += palavra + " ";
                 ajuste = true;
             }

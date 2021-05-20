@@ -16,19 +16,19 @@ public class GestaoDocumento extends PersistMongoEntidadeCustom  {
 
 	private String idHex;
 
-//TODO ajustar id Instacia , Não encontrado no thesaurus
+//TODO ajustar id Instacia , NÃ£o encontrado no thesaurus
 	@Property("IdInstacia")
 	private String idInstacia;
 
-//TODO ajustar id , Não encontrado no thesaurus
+//TODO ajustar id , NÃ£o encontrado no thesaurus
 	@Property("IdProdt")
 	private Long idProduto;
 
-//TODO ajustar id , Não encontrado no thesaurus
+//TODO ajustar id , NÃ£o encontrado no thesaurus
 	@Property("IdPpsta")
 	private Long idProposta;
 
-	@Embedded("Acord")
+	@Embedded("Acert")
 	private List<Documento> documentos;
 
 	private boolean status;

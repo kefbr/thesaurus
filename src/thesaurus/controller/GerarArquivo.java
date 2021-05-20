@@ -33,7 +33,7 @@ public class GerarArquivo {
     public static void geradorDeArquivo(List<String> dados, String path){
         try{
             OutputStream os = new FileOutputStream(path);
-            PrintWriter gravarArq = new PrintWriter(new OutputStreamWriter(os, "Cp1252"));
+            PrintWriter gravarArq = new PrintWriter(new OutputStreamWriter(os, "UTF-8"));
             for (String dado : dados) {
                 gravarArq.printf(dado);
             }
