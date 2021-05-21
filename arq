@@ -28,7 +28,7 @@ public class GestaoDocumento extends PersistMongoEntidadeCustom  {
 	@Property("IdPpsta")
 	private Long idProposta;
 
-	@Embedded("Acert")
+	@Embedded("Alienado")
 	private List<Documento> documentos;
 
 	private boolean status;

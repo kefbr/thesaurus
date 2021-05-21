@@ -5,14 +5,11 @@
  */
 package thesaurus.model;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-import thesaurus.arquivos.Arquivos;
-
 import static thesaurus.controller.Utils.normalizeFiles;
 import static thesaurus.model.Dicionario.dicionarioMnemomico;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  *

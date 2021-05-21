@@ -8,6 +8,7 @@ package thesaurus.view;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -67,6 +68,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         Abrir = new javax.swing.JMenuItem();
         Sair = new javax.swing.JMenuItem();
 
+        seletor.setCurrentDirectory(new File(System.getProperty("user.home")));
         seletor.setDialogTitle("Dialogo aberto");
         FileFilter filter = new FileNameExtensionFilter(".java", "java");
         seletor.setFileFilter(filter);

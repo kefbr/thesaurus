@@ -4,6 +4,9 @@
   <NonVisualComponents>
     <Component class="javax.swing.JFileChooser" name="seletor">
       <Properties>
+        <Property name="currentDirectory" type="java.io.File" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="new File(System.getProperty(&quot;user.home&quot;))" type="code"/>
+        </Property>
         <Property name="dialogTitle" type="java.lang.String" value="Dialogo aberto" postCode="FileFilter filter = new FileNameExtensionFilter(&quot;.java&quot;, &quot;java&quot;);&#xa;seletor.setFileFilter(filter);"/>
       </Properties>
     </Component>
