@@ -74,7 +74,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         seletor.setFileFilter(filter);
 
         telaCarregamento.setAlwaysOnTop(true);
-        telaCarregamento.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/thesaurus/arquivos/ico.png")));
+        telaCarregamento.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/ico.png")));
         telaCarregamento.setSize(new java.awt.Dimension(280, 100));
         telaCarregamento.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
@@ -110,7 +110,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Dicionário Thesaurus");
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/thesaurus/arquivos/ico.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/ico.png")));
         setMaximumSize(new java.awt.Dimension(734, 483));
         setName("Dicinário Thesaurus"); // NOI18N
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -239,7 +239,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         int returnVal = seletor.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             try {
-                textArea.read( new BufferedReader(new InputStreamReader(new FileInputStream(seletor.getSelectedFile()), "Cp1252")), null );
+                textArea.read( new BufferedReader(new InputStreamReader(new FileInputStream(seletor.getSelectedFile()), "UTF-8")), null );
             } catch (IOException ex) {
                 System.out.println("Problema ao acessar o arquivo: " + ex.getMessage());
             }

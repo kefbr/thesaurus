@@ -6,16 +6,15 @@
 package thesaurus.model;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import jxl.Sheet;
 import jxl.Workbook;
 import thesaurus.arquivos.Arquivos;
@@ -95,9 +94,9 @@ public class Dicionario {
     public static Map<String, Palavra> retornaSinonimosTEP() {
     	Map<String,Palavra> sinonimos = new HashMap<String,Palavra>();
         try {
-            File baseTEP = new File(Utils.class.getResource("/thesaurus/arquivos/tep.txt").toURI());
-            FileInputStream arquivo = new FileInputStream(baseTEP);
-            InputStreamReader input = new InputStreamReader(arquivo,"UTF-8");
+        	Arquivos arquivos = new Arquivos();
+            InputStream baseTEP = arquivos.getClass().getResourceAsStream("/tep.txt");
+            InputStreamReader input = new InputStreamReader(baseTEP,"UTF-8");
             BufferedReader bfr = new BufferedReader(input);
             String linha;
             do {
@@ -141,8 +140,7 @@ public class Dicionario {
             } while (linha != null);
             bfr.close();
             input.close();
-            arquivo.close();
-        } catch (URISyntaxException | IOException ex) {
+        } catch (IOException ex) {
             Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
         }
 		return sinonimos;
@@ -156,7 +154,8 @@ public class Dicionario {
     public static Map<String, String> retornarDicionario() {
         Map<String, String> dicionario = new HashMap<String, String>();
         try {
-            File thesaurusXLS = new File(Utils.class.getResource("/thesaurus/arquivos/thesaurus.xls").toURI());
+        	Arquivos arquivos = new Arquivos();
+            InputStream thesaurusXLS = arquivos.getClass().getResourceAsStream("/thesaurus.xls");
             Workbook workbook = Workbook.getWorkbook(thesaurusXLS);
             Sheet sheet = workbook.getSheet(0);
             int linhas = sheet.getRows();

@@ -18,11 +18,11 @@ public class Lista {
 	
 	public List<String> formatarLista(List<String> lista) throws Exception {
    		List<String> dadosFormatados = new ArrayList<String>();
-		if(lista.contains("//TODO Thesaurus Gerador Automatico"))
-			throw new Exception("Já existe anotaçoes de Thesaurus neste arquivo.");
+		if(lista.contains("//Thesaurus Gerador Automatico"))
+			throw new Exception("JÃ¡ existe anotaÃ§Ãµes de Thesaurus neste arquivo.");
 		for (String linha : lista) {
 			if (Class.isNomeClass(linha)) {
-				dadosFormatados.add("//TODO Thesaurus Gerador Automatico \n");
+				dadosFormatados.add("//Thesaurus Gerador Automatico \n");
 				adicionaLinhaClasse(linha,dadosFormatados);
             } else if(Class.isNomeVariavel(linha)){  
             	adicionaLinhaVariavel(linha,dadosFormatados);

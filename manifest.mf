@@ -1,3 +1,8 @@
-Manifest-Version: 1.0
+manifest-Version: 1.0
 X-COMMENT: Main-Class will be added automatically by build
-
+Built-By: mkyong
+Build-Jdk: 1.6.0_35
+Class-Path: dependency-jars/log4j-1.2.17.jar
+Created-By: Apache Maven
+Main-Class: thesaurus.view.TelaPrincipal
+Archiver-Version: Plexus Archiver

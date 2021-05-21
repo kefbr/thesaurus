@@ -3,8 +3,6 @@ package thesaurus.controller;
 import java.io.File;
 import java.io.PrintWriter;
 
-import thesaurus.arquivos.Arquivos;
-import thesaurus.model.Dicionario;
 import thesaurus.model.Lista;
 
 public class Main {
@@ -43,9 +41,4 @@ public class Main {
 		}
 		return arq;
 	}
-	public static void carregarBases() {
-		Arquivos.dicionarioXls = Dicionario.retornarDicionario();
-		Arquivos.dicionarioTep = Dicionario.retornaSinonimosTEP();
-	}
-	
 }
