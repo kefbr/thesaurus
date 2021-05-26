@@ -18,11 +18,17 @@ public class Lista {
 	
 	public List<String> formatarLista(List<String> lista) throws Exception {
    		List<String> dadosFormatados = new ArrayList<String>();
-		if(lista.contains("//Thesaurus Gerador Automatico"))
+		if(lista.contains("	 *		Thesausus Gerador Automático.\r\n"))
 			throw new Exception("Já existe anotações de Thesaurus neste arquivo.");
 		for (String linha : lista) {
 			if (Class.isNomeClass(linha)) {
-				dadosFormatados.add("//Thesaurus Gerador Automatico \n");
+				dadosFormatados.add("/* \r\n"
+						+ "	 *		Thesausus Gerador Automático.\r\n"
+						+ "	 *		O DESENVOLVEDOR É RESPONSAVEL POR CADA PALAVRA QUE FOI MODIFICADA.\r\n"
+						+ "	 *		A FERRAMENTA É UMA FORMA DE AUXILIAR, NÃO NOS RESPOSABILIZAMOS POR ERRO DE PALAVRAS.\r\n"
+						+ "	 *		PRESTAR A ATENÇÃO EM PALAVRAS NO PLURAL, E SE O MNEMÔNICO DELA FAZ SENTIDO. \r\n"
+						+ "	 * \r\n"
+						+ "	 * */\n");
 				adicionaLinhaClasse(linha,dadosFormatados);
             } else if(Class.isNomeVariavel(linha)){  
             	adicionaLinhaVariavel(linha,dadosFormatados);
